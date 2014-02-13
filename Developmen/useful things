@@ -1,0 +1,8 @@
+creating the database : 
+bundle exec rake db:create_migration NAME=create_resource --> it will create a db/migration/"time stamps"_create_resource
+set the db table format inside the db/migration/"time stamps"_create_resource
+run db:migrate
+run db:seed
+
+
+Understanding activeRecord http://www.integralist.co.uk/posts/sqlite-and-activerecord/ 
