@@ -1,6 +1,5 @@
 # encoding: UTF-8
 require 'test_helper'
-require 'test_resources'
 
 # se testean las funcionalidades de la aplicación app.rb en /
 class AppTest < Minitest::Unit::TestCase
@@ -225,43 +224,113 @@ class AppTest < Minitest::Unit::TestCase
     }
     assert_json_match(pattern, server_response.body)
   end
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=2013-11-13&limit=366&status=pending)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
+
+  def test_get_bookings_wrong_argument
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=2013-11-13&limit=sa&status=pending)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
+  def test_get_availability_wrong_argument
+    Wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=201-11-13&limit=332&status=pending)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
+  def test_get_bookings_the_bookings_exists_all_parameters
+    server_response = get '/resources/1/availability?date=2013-11-12&limit=3'
+    assert_equal 200, last_response.status
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+    pattern = {
+      availability: [
+        {
+          from:    "2013-11-12",
+          to:      "2013-11-15"
+          links: [
+            {
+              rel: "book",
+              uri: /^\S*\/resources\/\d\/bookings$/,
+              method: "POST"
+            },
+            {
+              rel: "resource",
+              uri: /.+\/resources\/\d$/
+            }
+          ]
+        },
+        {
+          from:     :from1,
+          to:       :to1,
+          links: [
+            {
+              rel: "book",
+              uri: /^\S*\/resources\/\d\/bookings$/,
+              method: "POST"
+            },
+            {
+              rel: "resource",
+              uri: /.+\/resources\/1$/
+            }
+          ]
+        },
+        {
+          from:     :from2,
+          to:       :to2,
+          links: [
+            {
+              rel: "book",
+              uri: /^\S*\/resources\/\d\/bookings$/,
+              method: "POST"
+            },
+            {
+              rel: "resource",
+              uri: /.+\/resources\/1$/
+            }
+          ]
+        }
+      ],
+      links: [
+        {
+          rel: "self",
+          uri:  /^\S*\/resources\/\d\/availability\?date=2013-11-12&limit=3$/
+        }
+      ]
+    }
+    [1,2].each { |x| ssert_block( matcher.captures[":from#{x}"] >= tomorrow, assert_block( matcher.captures[":to#{x}"] <= next_month ) )
+    assert_json_match(pattern, server_response.body)
   end
 
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=&limit=352&status=ds)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
+  def test_add_new_booking_wrogn_args
+    Wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+  end    
+  def test_add_new_booking
+    server_response = post'/resources/1/bookings?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z'
+    assert_equal 200, last_response.status
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+    pattern = {
+      "book":
+        {
+          "from":    "2013-11-12T00:00:00Z",
+          "to":      "2013-11-13T11:00:00Z",
+          "status": "pending",
+          "links": [
+            {
+              "rel": "self",
+              "url": /^\S*\/resources\/1\/\d/
+            },
+            {
+              "rel": "accept",
+              "uri": /^\S*\/resources\/1\/booking\/\d/,
+              "method": "PUT"
+            },
+            {
+              "rel": "reject",
+              "uri": "/^\S*\/resources\/1\/booking\/\d/",
+              "method": "DELETE"
+            }
+          ]
+        }
+      }
+      assert_json_match(pattern, server_response.body)
   end
-
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=2013-11-13&limit=366&status=)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
-  end
-  def test_get_bookings_the_bookings_wrong_argument
-    get %q(/resources/1/bookings?date=2013-11-13&limit=366&status=pending)
-    assert_equal 400, last_response.status
-    assert_equal 'Bad request', last_response.body 
-  end
-
-
-  def test_get_bookings_
-
 
 end
