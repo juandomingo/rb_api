@@ -21,27 +21,26 @@ class AppTest < Minitest::Unit::TestCase
   next_month =  Date.today.next_day(30).iso8601
   next_year =  Date.today.next_day(365).iso8601
 
-  #Test for get '/resources' test
-  #
-  #
+#1
   def test_get_all_resources
     server_response = get '/resources'
     assert_equal 200, last_response.status   #Check wheather the server response is 200 OK
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     # This is what we expect the returned JSON to look like
     pattern = {
-      resources: {
+      resources: [
+        {
         name:         string,                    # Simple string
         description:  string,                    # Simple string
         links: [
           {
-            rel:  "self"                   # The word 'self'
-            uri:  /^\S*\/resources\/\d+$/,      # The uri of the resource, regEx "URL"/resources/"resource_id"
+            rel:  "self",                   # The word 'self'
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
             }
           ]
-        }
-      ],
-            links: [
+        },
+        ],
+             links: [
         {
           rel: "self",                         # The word 'self'
           uri: /^\S*\/resources\//             # The uri of the resource, regEx
@@ -131,12 +130,8 @@ class AppTest < Minitest::Unit::TestCase
     }
     assert_block( matcher.captures[:from] >= tomorrow )
     assert_block( matcher.captures[:to] <= next_month )
-    
     assert_json_match(pattern, server_response.body)
   end
-    date: fecha a partir de la cuál se debe verificar la disponibilidad. Si no se especifica se asume la fecha de mañana.
-    limit: cantidad de días para los cuales considerar la búsqueda. Si no se especifica se asume 30. Este valor no podrá ser mayor que 365.
-    status: pending|approved|all por defecto se asume approved.
 
   def test_get_bookings_the_bookings_exists_all_parameters
     server_response = get %q(/resources/1/bookings?date=2013-11-13&limit=30&status=all)
@@ -148,7 +143,7 @@ class AppTest < Minitest::Unit::TestCase
         {
           from:     2013-11-13,
           to:       2013-12-13,
-          status:   ['approved' , 'pending' , 'rejected']
+          status:   ['approved' , 'pending' , 'rejected'],
           user:     /^[a-zA-Z,_,\d,\.]+\@.+\..+/,
           links: [
             {
@@ -175,7 +170,7 @@ class AppTest < Minitest::Unit::TestCase
       links: [
         {
           rel: "self",
-          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|rejected))$/
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|rejected)$/
         }
       ]
     }
@@ -191,7 +186,7 @@ class AppTest < Minitest::Unit::TestCase
         {
           from:     2013-11-13,
           to:       2013-12-13,
-          status:   "pending"
+          status:   "pending",
           user:     /^[a-zA-Z,_,\d,\.]+\@.+\..+/,
           links: [
             {
@@ -222,7 +217,7 @@ class AppTest < Minitest::Unit::TestCase
         }
       ]
     }
-    assert_json_match(pattern, server_response.body)
+    assert_json_match pattern, server_response.body
   end
 
   def test_get_bookings_wrong_argument
@@ -231,7 +226,7 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_get_availability_wrong_argument
-    Wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
     wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
@@ -243,7 +238,7 @@ class AppTest < Minitest::Unit::TestCase
       availability: [
         {
           from:    "2013-11-12",
-          to:      "2013-11-15"
+          to:      "2013-11-15",
           links: [
             {
               rel: "book",
@@ -257,8 +252,8 @@ class AppTest < Minitest::Unit::TestCase
           ]
         },
         {
-          from:     :from1,
-          to:       :to1,
+          from:     wildcard_matcher,
+          to:       wildcard_matcher,
           links: [
             {
               rel: "book",
@@ -272,8 +267,8 @@ class AppTest < Minitest::Unit::TestCase
           ]
         },
         {
-          from:     :from2,
-          to:       :to2,
+          from:     wildcard_matcher,
+          to:       wildcard_matcher,
           links: [
             {
               rel: "book",
@@ -294,38 +289,37 @@ class AppTest < Minitest::Unit::TestCase
         }
       ]
     }
-    [1,2].each { |x| ssert_block( matcher.captures[":from#{x}"] >= tomorrow, assert_block( matcher.captures[":to#{x}"] <= next_month ) )
-    assert_json_match(pattern, server_response.body)
   end
 
   def test_add_new_booking_wrogn_args
-    Wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
     wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
   end    
+
   def test_add_new_booking
     server_response = post'/resources/1/bookings?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z'
     assert_equal 201, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
-      "book":
+      book:
         {
-          "from":    "2013-11-12T00:00:00Z",
-          "to":      "2013-11-13T11:00:00Z",
-          "status": "pending",
-          "links": [
+          from:    "2013-11-12T00:00:00Z",
+          to:      "2013-11-13T11:00:00Z",
+          status: "pending",
+          links: [
             {
-              "rel": "self",
-              "url": /^\S*\/resources\/1\/\d/
+              rel: "self",
+              url: /^\S*\/resources\/1\/\d/
             },
             {
-              "rel": "accept",
-              "uri": /^\S*\/resources\/1\/booking\/\d/,
-              "method": "PUT"
+              rel: "accept",
+              uri: /^\S*\/resources\/1\/booking\/\d/,
+              method: "PUT"
             },
             {
-              "rel": "reject",
-              "uri": "/^\S*\/resources\/1\/booking\/\d/",
-              "method": "DELETE"
+              rel: "reject",
+              uri: /^\S*\/resources\/1\/booking\/\d/,
+              method: "DELETE"
             }
           ]
         }
@@ -335,11 +329,12 @@ class AppTest < Minitest::Unit::TestCase
 
   def test_cancel_booking
     POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
-    Request.last
-    DELETE '/resources/1/bookings/#{bk1.id}'
+    last_booking = Request.last
+    DELETE '/resources/1/bookings/#{last_booking.id}'
     assert_equal 200, last_response.status
     assert_equal '', last_response.body
   end
+
   def test_cancel_inexsistent
     DELETE '/resources/1/bookings/3000'
     assert_equal 404, last_response.status
@@ -348,40 +343,96 @@ class AppTest < Minitest::Unit::TestCase
   
   def test_accept_booking
     POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
-    Request.last
-    PUT '/resources/1/bookings/#{bk1.id}'
-    server_response = PUT /resources/1/bookings/100
+    last_booking = Request.last
+    PUT '/resources/1/bookings/#{last_booking.id}'
+    server_response = PUT '/resources/1/bookings/100'
     assert_equal 201, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
-    "book":
+    book:
     {
-        "from": "2000-11-12T00:00:00Z",
-        "to": "2000-11-13T11:00:00Z",
-        "status": "apporved",
-        "links": [
+        from: "2000-11-12T00:00:00Z",
+        to: "2000-11-13T11:00:00Z",
+        status: "apporved",
+        links: [
         {
-          "rel": "self",
-          "url": /^\S*\/resources\/1\/booking\/\d/
+          rel: "self",
+          url: /^\S*\/resources\/1\/booking\/\d/
         },
         {
-          "rel": "accept",
-          "uri": /^\S*\/resources\/1\/booking\/\d/,
-          "method": "PUT"
+          rel: "accept",
+          uri: /^\S*\/resources\/1\/booking\/\d/,
+          method: "PUT"
         },
         {
-          "rel": "reject",
-          "uri": /^\S*\/resources\/1\/booking\/\d/,
-          "method": "DELETE"
+          rel: "reject",
+          uri: /^\S*\/resources\/1\/booking\/\d/,
+          method: "DELETE"
         },
         {
-          "rel": "resource",
-          "url": /^\S*\/resources\/1/
+          rel: "resource",
+          url: /^\S*\/resources\/1/
         }      
       ]
     }
     }
     assert_json_match(pattern, server_response.body)
+    Delete '/resources/1/bookings/#{last_booking.id}'
   end
 
+  def test_accept_inexistent_booking
+    PUT '/resources/1/bookings/100000'
+    assert_equal 404, last_response.status
+  end
+
+  def test_accept_booking_with_conficts
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    last_booking = Request.last
+    first_booking_id=last_booking.id
+    PUT '/resources/1/bookings/#{last_booking.id}'
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    last_booking = Request.last
+    PUT '/resources/1/bookings/#{last_booking.id}'
+    assert_equal 409, last_response.status
+  end
+
+  def test_accept_booking_and_cancel_the_others
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    first_booking = Request.last
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    second_booking = Request.last
+    PUT '/resources/1/bookings/#{fisrt_booking.id}'
+    assert_equal 'reject', second_booking.status
+  end
+
+  def test_booking_show
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    last_booking = Request.last
+    server_response = GET '/resources/1/bookings/#{last_booking.id}' 
+    pattern = {
+      from: "2013-11-12T00:00:00Z",
+      to: "2013-11-13T11:00:00Z",
+      status: "pending",
+      links: [
+        {
+          rel: "self",
+          url: "/^\S*\/resources\/1\/bookings\/\d"
+        },
+        {
+          rel: "resource",
+          uri: "/^\S*\/resources\/1\/resource\/1",
+        },
+        {
+          rel: "accept",
+          uri: "/^\S*\/resources\/1\/bookings\/\d",
+          method: "PUT"
+        },
+        {
+          rel: "reject",
+          uri: "/^\S*\/resources\/1\/bookings\/\d",
+          method: "DELETE"
+        }
+      ]
+    }
+  end
 end
