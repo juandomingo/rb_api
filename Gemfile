@@ -6,6 +6,7 @@ gem 'sqlite3'
 gem 'activerecord'
 gem 'rake'
 gem 'rack-test'
+gem 'json_expressions'
 
 group :development do
   gem 'sinatra-contrib'

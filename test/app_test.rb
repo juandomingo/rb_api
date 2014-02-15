@@ -304,7 +304,7 @@ class AppTest < Minitest::Unit::TestCase
   end    
   def test_add_new_booking
     server_response = post'/resources/1/bookings?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z'
-    assert_equal 200, last_response.status
+    assert_equal 201, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
       "book":
@@ -331,6 +331,57 @@ class AppTest < Minitest::Unit::TestCase
         }
       }
       assert_json_match(pattern, server_response.body)
+  end
+
+  def test_cancel_booking
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    Request.last
+    DELETE '/resources/1/bookings/#{bk1.id}'
+    assert_equal 200, last_response.status
+    assert_equal '', last_response.body
+  end
+  def test_cancel_inexsistent
+    DELETE '/resources/1/bookings/3000'
+    assert_equal 404, last_response.status
+    assert_equal 'Not Found', last_response.body
+  end
+  
+  def test_accept_booking
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    Request.last
+    PUT '/resources/1/bookings/#{bk1.id}'
+    server_response = PUT /resources/1/bookings/100
+    assert_equal 201, last_response.status
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+    pattern = {
+    "book":
+    {
+        "from": "2000-11-12T00:00:00Z",
+        "to": "2000-11-13T11:00:00Z",
+        "status": "apporved",
+        "links": [
+        {
+          "rel": "self",
+          "url": /^\S*\/resources\/1\/booking\/\d/
+        },
+        {
+          "rel": "accept",
+          "uri": /^\S*\/resources\/1\/booking\/\d/,
+          "method": "PUT"
+        },
+        {
+          "rel": "reject",
+          "uri": /^\S*\/resources\/1\/booking\/\d/,
+          "method": "DELETE"
+        },
+        {
+          "rel": "resource",
+          "url": /^\S*\/resources\/1/
+        }      
+      ]
+    }
+    }
+    assert_json_match(pattern, server_response.body)
   end
 
 end
