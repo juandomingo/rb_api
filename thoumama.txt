@@ -1,0 +1,811 @@
+Inspecting 12 files
+CCWCCEECCWEC
+
+Offences:
+
+app.rb:30:80: C: Line is too long. [91/79]
+  Resource.create(name: 'ventilador', description: 'Ventilador de pie con astas metálicas')
+                                                                               ^^^^^^^^^^^^
+db/migrate/20140210191900_create_resource.rb:1:1: C: Missing top-level class documentation comment.
+class CreateResource < ActiveRecord::Migration
+^^^^^
+db/migrate/20140210191900_create_resource.rb:1:1: C: Missing utf-8 encoding comment.
+class CreateResource < ActiveRecord::Migration
+^
+db/migrate/20140210191941_create_request.rb:1:1: C: Missing top-level class documentation comment.
+class CreateRequest < ActiveRecord::Migration
+^^^^^
+db/migrate/20140210191941_create_request.rb:1:1: C: Missing utf-8 encoding comment.
+class CreateRequest < ActiveRecord::Migration
+^
+db/migrate/20140210191941_create_request.rb:4:3: C: Use 2 (not 4) spaces for indentation.
+      t.references :resources
+  ^^^^
+db/migrate/20140210191941_create_request.rb:9:3: W: end at 9, 2 is not aligned with create_table :requests do |t| at 3, 4
+  end
+  ^^^
+db/migrate/20140210191941_create_request.rb:10:1: C: Inconsistent indentation detected.
+  add_index :resources, :id
+^^
+db/migrate/20140210191941_create_request.rb:13:1: C: 1 trailing blank lines detected.
+db/schema.rb:1:1: C: Missing utf-8 encoding comment.
+# This file is auto-generated from the current state of the database. Instead
+^
+db/schema.rb:3:80: C: Line is too long. [81/79]
+# incrementally modify your database, and then regenerate this schema definition.
+                                                                               ^^
+db/schema.rb:8:80: C: Line is too long. [86/79]
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+                                                                               ^^^^^^^
+db/schema.rb:11:80: C: Line is too long. [86/79]
+# It's strongly recommended that you check this file into your version control system.
+                                                                               ^^^^^^^
+db/schema.rb:13:38: C: Separate every 3 digits in the integer portion of a number with underscores(_).
+ActiveRecord::Schema.define(version: 20140210191941) do
+                                     ^^^^^^^^^^^^^^
+db/schema.rb:15:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+  create_table "requests", force: true do |t|
+               ^^^^^^^^^^
+db/schema.rb:16:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.integer  "resources_id"
+               ^^^^^^^^^^^^^^
+db/schema.rb:17:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.string   "user"
+               ^^^^^^
+db/schema.rb:18:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.datetime "from"
+               ^^^^^^
+db/schema.rb:19:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.datetime "to"
+               ^^^^
+db/schema.rb:20:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.string   "status"
+               ^^^^^^^^
+db/schema.rb:23:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+  create_table "resources", force: true do |t|
+               ^^^^^^^^^^^
+db/schema.rb:24:14: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.string "name"
+             ^^^^^^
+db/schema.rb:25:14: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+    t.text   "description"
+             ^^^^^^^^^^^^^
+db/schema.rb:28:13: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+  add_index "resources", ["id"], name: "index_resources_on_id"
+            ^^^^^^^^^^^
+db/schema.rb:28:27: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+  add_index "resources", ["id"], name: "index_resources_on_id"
+                          ^^^^
+db/schema.rb:28:40: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+  add_index "resources", ["id"], name: "index_resources_on_id"
+                                       ^^^^^^^^^^^^^^^^^^^^^^^
+db/seeds.rb:1:1: C: Missing utf-8 encoding comment.
+require_relative '../model/resource'
+^
+db/seeds.rb:3:80: C: Line is too long. [115/79]
+Resource.create(name: 'Computadora', description: 'Notebook con 4GB de RAM y 256 GB de espacio en disco con Linux')
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+db/seeds.rb:5:80: C: Line is too long. [102/79]
+Resource.create(name: 'Sala de reuniones', description: 'Sala de reuniones con máquinas y proyector')
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^
+db/seeds.rb:6:80: C: Line is too long. [137/79]
+Request.create(from: '2013-11-13 11:00:00', to: '2013-11-13 12:00:00', status: 'approved', resources_id: 2, user: 'sorgentini@gmail.com')
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+db/seeds.rb:7:80: C: Line is too long. [134/79]
+Request.create(from: '2013-11-13 14:00:00', to: '2013-11-13 15:00:00', status: 'pending', resources_id: 2, user: 'robertoX@gmail.com')
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+db/seeds.rb:8:80: C: Line is too long. [138/79]
+Request.create(from: '2013-11-14 11:00:00', to: '2013-11-14 12:00:00', status: 'approved', resources_id: 2, user: 'juandomingo@gmail.com')
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+decorator/request_decorator.rb:4:50: E: unexpected token tCOLON
+    @resource_as_json = JSON.pretty_generate{from: @request.from, to:@request.to,status:@request.status,user:@request.user,name:@request.name}
+                                                 ^
+decorator/request_decorator.rb:4:67: E: unexpected token tLABEL
+    @resource_as_json = JSON.pretty_generate{from: @request.from, to:@request.to,status:@request.status,user:@request.user,name:@request.name}
+                                                                  ^^^
+decorator/request_decorator.rb:4:82: E: unexpected token tLABEL
+    @resource_as_json = JSON.pretty_generate{from: @request.from, to:@request.to,status:@request.status,user:@request.user,name:@request.name}
+                                                                                 ^^^^^^^
+decorator/request_decorator.rb:4:105: E: unexpected token tLABEL
+    @resource_as_json = JSON.pretty_generate{from: @request.from, to:@request.to,status:@request.status,user:@request.user,name:@request.name}
+                                                                                                        ^^^^^
+decorator/request_decorator.rb:4:124: E: unexpected token tLABEL
+    @resource_as_json = JSON.pretty_generate{from: @request.from, to:@request.to,status:@request.status,user:@request.user,name:@request.name}
+                                                                                                                           ^^^^^
+decorator/resource_decorator.rb:20:3: E: unexpected token $end
+model/request.rb:1:1: C: Missing utf-8 encoding comment.
+class Request < ActiveRecord::Base
+^
+model/request.rb:2:3: C: Source files should end with a newline (\n).
+end
+  ^
+model/resource.rb:1:1: C: Missing utf-8 encoding comment.
+class Resource < ActiveRecord::Base
+^
+test/app_test.rb:4:1: C: Use only ascii symbols in comments.
+# se testean las funcionalidades de la aplicación app.rb en /
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:5:1: C: Class definition is too long. [399/100]
+class AppTest < Minitest::Unit::TestCase
+^^^^^
+test/app_test.rb:7:1: C: Trailing whitespace detected.
+test/app_test.rb:20:3: W: Useless assignment to variable - tomorrow
+  tomorrow = Date.today.next.iso8601
+  ^^^^^^^^
+test/app_test.rb:21:3: W: Useless assignment to variable - next_month
+  next_month =  Date.today.next_day(30).iso8601
+  ^^^^^^^^^^
+test/app_test.rb:22:3: W: Useless assignment to variable - next_year
+  next_year =  Date.today.next_day(365).iso8601
+  ^^^^^^^^^
+test/app_test.rb:24:1: C: Missing space after #.
+#1
+^^
+test/app_test.rb:25:3: C: Method has too many lines. [24/10]
+  def test_get_all_resources
+  ^^^
+test/app_test.rb:27:46: C: Missing space after #.
+    assert_equal 200, last_response.status   #Check wheather the server response is 200 OK
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:27:80: C: Line is too long. [90/79]
+    assert_equal 200, last_response.status   #Check wheather the server response is 200 OK
+                                                                               ^^^^^^^^^^^
+test/app_test.rb:28:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:28:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:37:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+            rel:  "self",                   # The word 'self'
+                  ^^^^^^
+test/app_test.rb:38:19: C: Use %r for regular expressions matching more than 1 '/' character.
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:38:80: C: Line is too long. [109/79]
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:41:10: C: Avoid comma after the last item of an array.
+        },
+         ^
+test/app_test.rb:43:14: C: Align the elements of a hash literal if they span more than one line.
+             links: [
+             ^^^^^^^^
+test/app_test.rb:45:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",                         # The word 'self'
+               ^^^^^^
+test/app_test.rb:46:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\//             # The uri of the resource, regEx
+               ^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:50:80: C: Line is too long. [128/79]
+    assert_json_match pattern, server_response.body    # Chech wheather the server response folow the response pattern expected.
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:53:3: C: Missing space after #.
+  #Test for get '/resources/:id' test
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:56:3: C: Method has too many lines. [20/10]
+  def test_get_one_resource
+  ^^^
+test/app_test.rb:59:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:59:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:67:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+            rel:  "self",                      # The word 'self'
+                  ^^^^^^
+test/app_test.rb:68:19: C: Use %r for regular expressions matching more than 1 '/' character.
+            uri:  /^\S*\/resources\/1$/        # The uri of the resource, regEx  "URL"/resources/1
+                  ^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:68:80: C: Line is too long. [98/79]
+            uri:  /^\S*\/resources\/1$/        # The uri of the resource, regEx  "URL"/resources/1
+                                                                               ^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:71:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+            rel:  "bookings",                  # The word 'bookings'
+                  ^^^^^^^^^^
+test/app_test.rb:72:19: C: Use %r for regular expressions matching more than 1 '/' character.
+            uri:  /^\S*\/resources\/1\/bookings$/ # The uri of the resource, regEx  "URL"/resources/1/bookings
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:72:80: C: Line is too long. [110/79]
+            uri:  /^\S*\/resources\/1\/bookings$/ # The uri of the resource, regEx  "URL"/resources/1/bookings
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:77:80: C: Line is too long. [128/79]
+    assert_json_match pattern, server_response.body    # Chech wheather the server response folow the response pattern expected.
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:80:35: C: Trailing whitespace detected.
+  def test_get_inexistent_resource         
+                                  ^^^^^^^^^
+test/app_test.rb:81:5: W: Useless assignment to variable - server_response
+    server_response = get '/resources/100000'             
+    ^^^^^^^^^^^^^^^
+test/app_test.rb:81:46: C: Trailing whitespace detected.
+    server_response = get '/resources/100000'             
+                                             ^^^^^^^^^^^^^
+test/app_test.rb:83:49: C: Trailing whitespace detected.
+    assert_equal 'Not Found', last_response.body 
+                                                ^
+test/app_test.rb:86:1: C: Extra blank line detected.
+test/app_test.rb:87:3: C: Missing space after #.
+  #Test for get GET /resources/1/bookings?date='YYYY-MM-DD&limit=30&status=all' test
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:87:80: C: Line is too long. [84/79]
+  #Test for get GET /resources/1/bookings?date='YYYY-MM-DD&limit=30&status=all' test
+                                                                               ^^^^^
+test/app_test.rb:90:3: C: Method has too many lines. [43/10]
+  def test_get_bookings_arg_limit_date_status
+  ^^^
+test/app_test.rb:91:5: W: Useless assignment to variable - server_response
+    server_response = get %q(/resources/1/bookings)
+    ^^^^^^^^^^^^^^^
+test/app_test.rb:93:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:93:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:100:21: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          status:   "approved",
+                    ^^^^^^^^^^
+test/app_test.rb:104:21: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel:  "self",
+                    ^^^^^^
+test/app_test.rb:105:21: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri:  /^\S*\/resources\/\d\/bookings$/
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:108:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:109:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:112:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "accept",
+                   ^^^^^^^^
+test/app_test.rb:113:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:114:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "PUT"
+                      ^^^^^
+test/app_test.rb:117:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "reject",
+                   ^^^^^^^^
+test/app_test.rb:118:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:119:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "DELETE"
+                      ^^^^^^^^
+test/app_test.rb:126:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:127:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=approved$/
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:127:80: C: Line is too long. [96/79]
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=approved$/
+                                                                               ^^^^^^^^^^^^^^^^^
+test/app_test.rb:131:18: C: Space inside parentheses detected.
+    assert_block( matcher.captures[:from] >= tomorrow )
+                 ^
+test/app_test.rb:131:54: C: Space inside parentheses detected.
+    assert_block( matcher.captures[:from] >= tomorrow )
+                                                     ^
+test/app_test.rb:132:18: C: Space inside parentheses detected.
+    assert_block( matcher.captures[:to] <= next_month )
+                 ^
+test/app_test.rb:132:54: C: Space inside parentheses detected.
+    assert_block( matcher.captures[:to] <= next_month )
+                                                     ^
+test/app_test.rb:136:3: C: Method has too many lines. [40/10]
+  def test_get_bookings_the_bookings_exists_all_parameters
+  ^^^
+test/app_test.rb:137:80: C: Line is too long. [87/79]
+    server_response = get %q(/resources/1/bookings?date=2013-11-13&limit=30&status=all)
+                                                                               ^^^^^^^^
+test/app_test.rb:139:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:139:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:140:1: C: Trailing whitespace detected.
+test/app_test.rb:141:1: C: Inconsistent indentation detected.
+      pattern = {
+^^^^^^
+test/app_test.rb:144:25: C: Surrounding space missing for operator '-'.
+          from:     2013-11-13,
+                        ^
+test/app_test.rb:144:28: C: Surrounding space missing for operator '-'.
+          from:     2013-11-13,
+                           ^
+test/app_test.rb:145:25: C: Surrounding space missing for operator '-'.
+          to:       2013-12-13,
+                        ^
+test/app_test.rb:145:28: C: Surrounding space missing for operator '-'.
+          to:       2013-12-13,
+                           ^
+test/app_test.rb:146:21: C: Use %w or %W for array of words.
+          status:   ['approved' , 'pending' , 'rejected'],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:150:21: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel:  "self",
+                    ^^^^^^
+test/app_test.rb:151:21: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri:  /^\S*\/resources\/\d\/bookings$/
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:154:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:155:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:158:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "accept",
+                   ^^^^^^^^
+test/app_test.rb:159:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:160:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "PUT"
+                      ^^^^^
+test/app_test.rb:163:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "reject",
+                   ^^^^^^^^
+test/app_test.rb:164:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:165:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "DELETE"
+                      ^^^^^^^^
+test/app_test.rb:172:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:173:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|rejected)$/
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:173:80: C: Line is too long. [115/79]
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|rejected)$/
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:177:1: C: Inconsistent indentation detected.
+    assert_json_match(pattern, server_response.body)
+^^^^
+test/app_test.rb:180:3: C: Method has too many lines. [40/10]
+  def test_get_bookings_the_bookings_exists_pending
+  ^^^
+test/app_test.rb:181:80: C: Line is too long. [91/79]
+    server_response = get %q(/resources/1/bookings?date=2013-11-13&limit=30&status=pending)
+                                                                               ^^^^^^^^^^^^
+test/app_test.rb:183:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:183:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:187:25: C: Surrounding space missing for operator '-'.
+          from:     2013-11-13,
+                        ^
+test/app_test.rb:187:28: C: Surrounding space missing for operator '-'.
+          from:     2013-11-13,
+                           ^
+test/app_test.rb:188:25: C: Surrounding space missing for operator '-'.
+          to:       2013-12-13,
+                        ^
+test/app_test.rb:188:28: C: Surrounding space missing for operator '-'.
+          to:       2013-12-13,
+                           ^
+test/app_test.rb:189:21: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          status:   "pending",
+                    ^^^^^^^^^
+test/app_test.rb:193:21: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel:  "self",
+                    ^^^^^^
+test/app_test.rb:194:21: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri:  /^\S*\/resources\/\d\/bookings$/
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:197:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:198:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:201:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "accept",
+                   ^^^^^^^^
+test/app_test.rb:202:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:203:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "PUT"
+                      ^^^^^
+test/app_test.rb:206:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "reject",
+                   ^^^^^^^^
+test/app_test.rb:207:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$\/\d$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:208:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "DELETE"
+                      ^^^^^^^^
+test/app_test.rb:215:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:216:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=pending$/
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:216:80: C: Line is too long. [95/79]
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=pending$/
+                                                                               ^^^^^^^^^^^^^^^^
+test/app_test.rb:224:32: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                               ^
+test/app_test.rb:224:75: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                          ^
+test/app_test.rb:224:80: C: Line is too long. [286/79]
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:224:119: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                      ^
+test/app_test.rb:224:143: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                              ^
+test/app_test.rb:224:172: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                           ^
+test/app_test.rb:224:210: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                                                 ^
+test/app_test.rb:224:252: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                                                                                           ^
+test/app_test.rb:224:285: C: Space inside square brackets detected.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                                                                                                                            ^
+test/app_test.rb:225:64: C: Do not use semicolons to terminate expressions.
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                               ^
+test/app_test.rb:225:64: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                               ^
+test/app_test.rb:225:80: C: Line is too long. [151/79]
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:225:103: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                                                      ^
+test/app_test.rb:229:32: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                               ^
+test/app_test.rb:229:75: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                          ^
+test/app_test.rb:229:80: C: Line is too long. [191/79]
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:229:105: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                                                        ^
+test/app_test.rb:229:129: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                                                                                ^
+test/app_test.rb:229:143: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                                                                                              ^
+test/app_test.rb:229:158: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+                                                                                                                                                             ^
+test/app_test.rb:230:68: C: Do not use semicolons to terminate expressions.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                   ^
+test/app_test.rb:230:68: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                   ^
+test/app_test.rb:230:80: C: Line is too long. [155/79]
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:230:107: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                                                          ^
+test/app_test.rb:233:3: C: Method has too many lines. [58/10]
+  def test_get_bookings_the_bookings_exists_all_parameters
+  ^^^
+test/app_test.rb:234:5: W: Useless assignment to variable - server_response
+    server_response = get '/resources/1/availability?date=2013-11-12&limit=3'
+    ^^^^^^^^^^^^^^^
+test/app_test.rb:236:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:236:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:237:5: W: Useless assignment to variable - pattern
+    pattern = {
+    ^^^^^^^
+test/app_test.rb:240:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          from:    "2013-11-12",
+                   ^^^^^^^^^^^^
+test/app_test.rb:241:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          to:      "2013-11-15",
+                   ^^^^^^^^^^^^
+test/app_test.rb:244:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "book",
+                   ^^^^^^
+test/app_test.rb:245:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:246:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "POST"
+                      ^^^^^^
+test/app_test.rb:249:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:250:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /.+\/resources\/\d$/
+                   ^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:259:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "book",
+                   ^^^^^^
+test/app_test.rb:260:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:261:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "POST"
+                      ^^^^^^
+test/app_test.rb:264:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:265:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /.+\/resources\/1$/
+                   ^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:274:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "book",
+                   ^^^^^^
+test/app_test.rb:275:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/\d\/bookings$/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:276:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "POST"
+                      ^^^^^^
+test/app_test.rb:279:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "resource",
+                   ^^^^^^^^^^
+test/app_test.rb:280:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /.+\/resources\/1$/
+                   ^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:287:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:288:17: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri:  /^\S*\/resources\/\d\/availability\?date=2013-11-12&limit=3$/
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:295:32: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                               ^
+test/app_test.rb:295:75: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                          ^
+test/app_test.rb:295:80: C: Line is too long. [227/79]
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:295:126: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                             ^
+test/app_test.rb:295:178: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                 ^
+test/app_test.rb:295:193: C: Space missing after comma.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                                ^
+test/app_test.rb:295:226: C: Space inside square brackets detected.
+    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
+                                                                                                                                                                                                                                 ^
+test/app_test.rb:296:68: C: Do not use semicolons to terminate expressions.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                   ^
+test/app_test.rb:296:68: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                   ^
+test/app_test.rb:296:80: C: Line is too long. [155/79]
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:296:107: C: Space missing after semicolon.
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+                                                                                                          ^
+test/app_test.rb:297:6: C: Trailing whitespace detected.
+  end    
+     ^^^^
+test/app_test.rb:299:3: C: Method has too many lines. [28/10]
+  def test_add_new_booking
+  ^^^
+test/app_test.rb:300:80: C: Line is too long. [98/79]
+    server_response = post'/resources/1/bookings?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z'
+                                                                               ^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:302:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:302:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:306:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          from:    "2013-11-12T00:00:00Z",
+                   ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:307:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          to:      "2013-11-13T11:00:00Z",
+                   ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:308:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          status: "pending",
+                  ^^^^^^^^^
+test/app_test.rb:311:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "self",
+                   ^^^^^^
+test/app_test.rb:312:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              url: /^\S*\/resources\/1\/\d/
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:315:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "accept",
+                   ^^^^^^^^
+test/app_test.rb:316:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/1\/booking\/\d/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:317:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "PUT"
+                      ^^^^^
+test/app_test.rb:320:20: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              rel: "reject",
+                   ^^^^^^^^
+test/app_test.rb:321:20: C: Use %r for regular expressions matching more than 1 '/' character.
+              uri: /^\S*\/resources\/1\/booking\/\d/,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:322:23: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+              method: "DELETE"
+                      ^^^^^^^^
+test/app_test.rb:327:1: C: Inconsistent indentation detected.
+      assert_json_match(pattern, server_response.body)
+^^^^^^
+test/app_test.rb:331:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:332:5: W: Useless assignment to variable - last_booking
+    last_booking = Request.last
+    ^^^^^^^^^^^^
+test/app_test.rb:343:1: C: Trailing whitespace detected.
+test/app_test.rb:344:3: C: Method has too many lines. [36/10]
+  def test_accept_booking
+  ^^^
+test/app_test.rb:345:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:346:5: W: Useless assignment to variable - last_booking
+    last_booking = Request.last
+    ^^^^^^^^^^^^
+test/app_test.rb:350:80: C: Line is too long. [156/79]
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:350:92: C: Missing space after #.
+    assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:354:15: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+        from: "2000-11-12T00:00:00Z",
+              ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:355:13: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+        to: "2000-11-13T11:00:00Z",
+            ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:356:17: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+        status: "apporved",
+                ^^^^^^^^^^
+test/app_test.rb:359:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:360:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          url: /^\S*\/resources\/1\/booking\/\d/
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:363:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "accept",
+               ^^^^^^^^
+test/app_test.rb:364:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\/1\/booking\/\d/,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:365:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          method: "PUT"
+                  ^^^^^
+test/app_test.rb:368:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "reject",
+               ^^^^^^^^
+test/app_test.rb:369:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          uri: /^\S*\/resources\/1\/booking\/\d/,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:370:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          method: "DELETE"
+                  ^^^^^^^^
+test/app_test.rb:373:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "resource",
+               ^^^^^^^^^^
+test/app_test.rb:374:16: C: Use %r for regular expressions matching more than 1 '/' character.
+          url: /^\S*\/resources\/1/
+               ^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:375:10: C: Trailing whitespace detected.
+        }      
+         ^^^^^^
+test/app_test.rb:389:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:391:5: W: Useless assignment to variable - first_booking_id
+    first_booking_id=last_booking.id
+    ^^^^^^^^^^^^^^^^
+test/app_test.rb:391:21: C: Surrounding space missing for operator '='.
+    first_booking_id=last_booking.id
+                    ^
+test/app_test.rb:393:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:394:5: W: Useless assignment to variable - last_booking
+    last_booking = Request.last
+    ^^^^^^^^^^^^
+test/app_test.rb:400:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:401:5: W: Useless assignment to variable - first_booking
+    first_booking = Request.last
+    ^^^^^^^^^^^^^
+test/app_test.rb:402:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:408:3: C: Method has too many lines. [28/10]
+  def test_booking_show
+  ^^^
+test/app_test.rb:409:80: C: Line is too long. [82/79]
+    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+                                                                               ^^^
+test/app_test.rb:410:5: W: Useless assignment to variable - last_booking
+    last_booking = Request.last
+    ^^^^^^^^^^^^
+test/app_test.rb:411:5: W: Useless assignment to variable - server_response
+    server_response = GET '/resources/1/bookings/#{last_booking.id}' 
+    ^^^^^^^^^^^^^^^
+test/app_test.rb:411:69: C: Trailing whitespace detected.
+    server_response = GET '/resources/1/bookings/#{last_booking.id}' 
+                                                                    ^
+test/app_test.rb:412:5: W: Useless assignment to variable - pattern
+    pattern = {
+    ^^^^^^^
+test/app_test.rb:413:13: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+      from: "2013-11-12T00:00:00Z",
+            ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:414:11: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+      to: "2013-11-13T11:00:00Z",
+          ^^^^^^^^^^^^^^^^^^^^^^
+test/app_test.rb:415:15: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+      status: "pending",
+              ^^^^^^^^^
+test/app_test.rb:418:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "self",
+               ^^^^^^
+test/app_test.rb:422:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "resource",
+               ^^^^^^^^^^
+test/app_test.rb:423:50: C: Avoid comma after the last item of a hash.
+          uri: "/^\S*\/resources\/1\/resource\/1",
+                                                 ^
+test/app_test.rb:426:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "accept",
+               ^^^^^^^^
+test/app_test.rb:428:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          method: "PUT"
+                  ^^^^^
+test/app_test.rb:431:16: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          rel: "reject",
+               ^^^^^^^^
+test/app_test.rb:433:19: C: Prefer single-quoted strings when you don't need string interpolation or special symbols.
+          method: "DELETE"
+                  ^^^^^^^^
+test/decorator_test.rb:18:6: E: unexpected token $end
+  end
+     
+test/test_helper.rb:1:1: C: Missing utf-8 encoding comment.
+require 'json_expressions/minitest'
+^
+
+12 files inspected, 272 offences detected
