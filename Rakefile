@@ -7,8 +7,3 @@ Rake::TestTask.new do |t|
 end
 
 task default: :test
-
-ActiveRecord::Base.establish_connection(
-  :adapter  => 'sqlite3',
-  :database => 'db/test.sqlite3'
-)
