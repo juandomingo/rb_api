@@ -222,12 +222,12 @@ class AppTest < Minitest::Unit::TestCase
 
   def test_get_bookings_wrong_argument
     wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
-    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
   def test_get_availability_wrong_argument
     wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
-    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
   def test_get_bookings_the_bookings_exists_all_parameters

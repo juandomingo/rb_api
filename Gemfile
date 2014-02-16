@@ -10,6 +10,7 @@ gem 'json_expressions'
 
 group :development do
   gem 'sinatra-contrib'
+  gem 'rubocop'
    
 end
 
