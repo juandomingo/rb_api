@@ -71,6 +71,7 @@ PLATFORMS
 
 DEPENDENCIES
   database_cleaner
+  json
   json_expressions
   minitest
   rack-test

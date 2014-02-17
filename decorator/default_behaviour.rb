@@ -1,3 +1,5 @@
+# encoding: UTF-8
+# mixins that includes the basic functionality of a ActiveRecord subclass for this app.
 module Getter
   def as_if_i_had_a_location(url)
     as_if_i_were_hash.merge( { links: [ { rel: 'self', uri: "#{url}/#{as_if_i_were_a_number}" } ] } )

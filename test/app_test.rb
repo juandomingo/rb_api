@@ -17,11 +17,6 @@ class AppTest < Minitest::Unit::TestCase
     DatabaseCleaner.clean
   end
 
-  tomorrow = Date.today.next.iso8601
-  next_month =  Date.today.next_day(30).iso8601
-  next_year =  Date.today.next_day(365).iso8601
-
-#1
   def test_get_all_resources
     server_response = get '/resources'
     assert_equal 200, last_response.status   #Check wheather the server response is 200 OK
@@ -30,8 +25,38 @@ class AppTest < Minitest::Unit::TestCase
     pattern = {
       resources: [
         {
-        name:         string,                    # Simple string
-        description:  string,                    # Simple string
+        name:         /\S/,                    # Simple string
+        description:  /\S/,                    # Simple string
+        links: [
+          {
+            rel:  "self",                   # The word 'self'
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
+            }
+          ]
+        },
+        {
+        name:         /\S/,                    # Simple string
+        description:  /\S/,                    # Simple string
+        links: [
+          {
+            rel:  "self",                   # The word 'self'
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
+            }
+          ]
+        },
+        {
+        name:         /\S/,                    # Simple string
+        description:  /\S/,                    # Simple string
+        links: [
+          {
+            rel:  "self",                   # The word 'self'
+            uri:  /^\S*\/resources\/\d+$/,     # The uri of the resource, regEx "URL"/resources/"resource_id"
+            }
+          ]
+        },
+        {
+        name:         /\S/,                    # Simple string
+        description:  /\S/,                    # Simple string
         links: [
           {
             rel:  "self",                   # The word 'self'
@@ -54,14 +79,14 @@ class AppTest < Minitest::Unit::TestCase
   #
   #
   def test_get_one_resource
-    server_response = get '/resources/1'
+    server_response = get '/resources/2'
     assert_equal 200, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     # This is what we expect the returned JSON to look like
     pattern = {
       resource: {
-        name:          String,                 # Simple string
-        description:   String,                 # Simple string
+        name:          /\S/,                 # Simple string
+        description:   /\S/,                 # Simple string
         links: [
           {
             rel:  "self",                      # The word 'self'
@@ -88,7 +113,7 @@ class AppTest < Minitest::Unit::TestCase
   #
   #
   def test_get_bookings_arg_limit_date_status
-    server_response = get %q(/resources/1/bookings)
+    server_response = get %q(/resources/2/bookings)
     assert_equal 200, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     server_response = get %q(/resources/1/bookings)
@@ -128,8 +153,6 @@ class AppTest < Minitest::Unit::TestCase
         }
       ]
     }
-    assert_block( matcher.captures[:from] >= tomorrow )
-    assert_block( matcher.captures[:to] <= next_month )
     assert_json_match(pattern, server_response.body)
   end
 
@@ -178,7 +201,7 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_get_bookings_the_bookings_exists_pending
-    server_response = get %q(/resources/1/bookings?date=2013-11-13&limit=30&status=pending)
+    server_response = get 'resources/2/bookings?date=2013-11-13&limit=30&status=pending'
     assert_equal 200, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
@@ -221,12 +244,16 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_get_bookings_wrong_argument
-    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
-    wrong_arguments.each { |x|  get "/resources/1/bookings#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+    wrong_arguments = ['?asdfsd','?date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments.each do |x|  
+      get "/resources/1/bookings#{x}"
+      assert_equal 404, last_response.status
+      assert_equal 'Bad request', last_response.body
+    end
   end
 
   def test_get_availability_wrong_argument
-    wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+    wrong_arguments = ['?asdfsd','?date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
     wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
   end
 
@@ -297,7 +324,7 @@ class AppTest < Minitest::Unit::TestCase
   end    
 
   def test_add_new_booking
-    server_response = post'/resources/1/bookings?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z'
+    server_response = post'/resources/2/bookings', from:'2013-11-12T00:00:00Z',to:'2013-11-13T11:00:00Z'
     assert_equal 201, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
@@ -328,25 +355,24 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_cancel_booking
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z', to:'2000-11-13T00:00:00Z'
     last_booking = Request.last
-    DELETE '/resources/1/bookings/#{last_booking.id}'
+    delete "/resources/1/bookings/#{last_booking.id}"
     assert_equal 200, last_response.status
     assert_equal '', last_response.body
   end
 
   def test_cancel_inexsistent
-    DELETE '/resources/1/bookings/3000'
+    delete '/resources/1/bookings/3000'
     assert_equal 404, last_response.status
     assert_equal 'Not Found', last_response.body
   end
   
   def test_accept_booking
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z', to:'2000-11-13T00:00:00Z'
     last_booking = Request.last
-    PUT '/resources/1/bookings/#{last_booking.id}'
-    server_response = PUT '/resources/1/bookings/100'
-    assert_equal 201, last_response.status
+    server_response = put "/resources/1/bookings/#{last_booking.id}"
+    assert_equal 200, last_response.status
     assert_equal 'application/json;charset=utf-8', last_response.headers['Content-Type']   #Check wheather the server response is json stuff codded as utf-8
     pattern = {
     book:
@@ -381,34 +407,34 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_accept_inexistent_booking
-    PUT '/resources/1/bookings/100000'
+    put '/resources/1/bookings/100000'
     assert_equal 404, last_response.status
   end
 
   def test_accept_booking_with_conficts
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z', to:'2000-11-13T00:00:00Z'
     last_booking = Request.last
     first_booking_id=last_booking.id
-    PUT '/resources/1/bookings/#{last_booking.id}'
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    put "/resources/1/bookings/#{last_booking.id}"
+    post '/resources/1/bookings', from: '2000-11-12T00:00:00Z', to: '2000-11-13T00:00:00Z'
     last_booking = Request.last
-    PUT '/resources/1/bookings/#{last_booking.id}'
+    put "/resources/1/bookings/#{last_booking.id}"
     assert_equal 409, last_response.status
   end
 
   def test_accept_booking_and_cancel_the_others
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings?', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
     first_booking = Request.last
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
     second_booking = Request.last
-    PUT '/resources/1/bookings/#{fisrt_booking.id}'
+    put "/resources/1/bookings/#{first_booking.id}"
     assert_equal 'reject', second_booking.status
   end
 
   def test_booking_show
-    POST '/resources/1/bookings?from:2000-11-12T00:00:00Z&to:2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
     last_booking = Request.last
-    server_response = GET '/resources/1/bookings/#{last_booking.id}' 
+    server_response = get "/resources/1/bookings/#{last_booking.id}"
     pattern = {
       from: "2013-11-12T00:00:00Z",
       to: "2013-11-13T11:00:00Z",

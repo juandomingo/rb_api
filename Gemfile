@@ -15,4 +15,5 @@ group :test do
   gem 'database_cleaner'
   gem 'rack-test'
   gem 'json_expressions'
+  gem 'json'
 end
