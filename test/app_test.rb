@@ -143,7 +143,7 @@ class AppTest < Minitest::Unit::TestCase
         {
           from:     2013-11-13,
           to:       2013-12-13,
-          status:   ['approved' , 'pending' , 'rejected'],
+          status:   ['approved' , 'pending' , 'canceled'],
           user:     /^[a-zA-Z,_,\d,\.]+\@.+\..+/,
           links: [
             {
@@ -170,7 +170,7 @@ class AppTest < Minitest::Unit::TestCase
       links: [
         {
           rel: "self",
-          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|rejected)$/
+          uri: /^\S*\/resources\/\d+\/bookings\?date=\d+\-\d+\-\d+\&limit=\d+\&status=(approved|pending|canceled)$/
         }
       ]
     }

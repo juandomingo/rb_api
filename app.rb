@@ -11,6 +11,7 @@ error do
   'Error'
 end
 
+
 def self.root
   File.dirname(__FILE__)
 end
@@ -26,9 +27,9 @@ end
 get '/resources' do
   array_to_show = []
   Resource.all.each {|one_resource| 
-    array_to_show << ResourceDecorator.new(one_resource).as_if_i_had_a_location(request.url)
+    array_to_show << ResourceDecorator.new(one_resource).as_if_i_had_actions(request.base_url,'self')
   }
-  JSON.pretty_generate({resources: array_to_show, links: [rel:'self', uri: "#{request.base_url}"]})
+  JSON.pretty_generate({resources: array_to_show, links: [rel:'self', uri: "#{request.url}"]})
 end
 
 get '/resources/:id' do
@@ -39,30 +40,59 @@ get '/resources/:id' do
   end 
 end
 
-get '/resources/:id/bookings' do
-  params[:date]=Date.today.next_day.iso8601 unless !params[:date].nil?
-  params[:limit]=Date.today.next_day(30).iso8601 unless !params[:limit].nil? 
-  params[:status]='approved' unless ! params[:status].nil?  
-  array_to_show = []
-  ar_querry = "'resources_id' = :resources_id"
-  Request.all.each {|one_request| 
-    array_to_show << RequestDecorator.new(one_request).as_if_i_had_a_location(request.url) unless !RequestDecorator.new(one_request).am_i_between_?(params[:date], params[:limit]) 
-  }
-  JSON.pretty_generate({resources: array_to_show, links: [rel:'self', uri: "#{request.base_url}"]})
+get '/resources/:id/bookings' do 
+  params[:date]=Date.today.next_day.iso8601 if params[:date].nil? 
+  params[:limit]=30 if params[:limit].nil? 
+  params[:status]='approved' if params[:status].nil?  
+  
 
-  # end_date = Time.parse(date) + (limit * 24 * 60 * 60)
-  # str_start = date.to_s + ' 00:00:00'
-  # str_end = end_date.strftime('%Y-%m-%d').tho_s + ' 23:59:59'
-  #   all_exp = 
-  # else_exp = "resource_id = :res_id AND status = :status AND
-  #   start <= :end_date AND end > :start_date"
-  # use = status == 'all' ? all_exp : else_exp
-  # Booking.where( 
-  #   use,
-  #   res_id: res_id, start_date: start_d,
-  #   end_date: end_d, status: status
-  # )
+  redirect 'error' if params[:limit].to_i > 365
+  redirect 'error' unless ['approved','pending','all'].include?params[:status] 
+  redirect 'error' unless /\d{4}-\d{1,2}-\d{1,2}/.match(params[:date])
+
+  array_to_show = []
+  Request.all.each {|one_request| 
+    one_decored_request = RequestDecorator.new(one_request)
+    array_to_show << one_decored_request.as_if_i_had_actions(request.base_url,'self','resource', 'accept','reject') if one_decored_request.am_i_?(params[:status])&&one_decored_request.am_i_between_?(params[:date], params[:limit])&&one_decored_request.am_i_requesting_resource_number?(params[:id])
+  }
+  JSON.pretty_generate({bookings: array_to_show, links: [rel:'self', uri: "#{request.url}"]})
 end
+
+
+
+get '/resources/:id/availability' do
+  params[:date]=Date.today.next_day.iso8601 if params[:date].nil? 
+  params[:limit]=30 if params[:limit].nil? 
+
+  redirect 'error' if params[:limit].to_i > 365
+  redirect 'error' unless /\d{4}-\d{1,2}-\d{1,2}/.match(params[:date])
+
+  base_array = []
+  Request.all.each {|one_request| 
+    one_decored_request = RequestDecorator.new(one_request)
+    base_array << one_decored_request.as_if_i_were_an_intiger_time_lapse if one_decored_request.am_i_approved?&&one_decored_request.am_i_between_?(params[:date], params[:limit])&&one_decored_request.am_i_requesting_resource_number?(params[:id])
+  }
+
+  time_array = [(Time.parse(params[:date]).to_i..Time.parse(params[:date]).to_i + params[:limit].to_i*SECONDS_IN_A_DAY)]
+
+  base_array.each{ |each_a|
+    time_array.each{ |each_t|if (each_t === each_a.min)&&(each_t === each_a.max) then
+      puts "test_hola"
+      time_array = time_array - [each_t] 
+      time_array = time_array + [(each_t.min...each_a.min),(each_a.max...each_t.max)]
+    end
+    }
+  }
+
+  hash_to_show = []
+  time_array.each{ |each_one| hash_to_show << {from: Time.at(each_one.min).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    to: Time.at( each_one.max).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    links:[{rel: "book",link: "#{request.base_url}/resources/#{params[:id]}/bookings",method: "POST"},
+        {rel: "resource",uri: "#{request.base_url}/resources/#{params[:id]}"},]} } 
+  
+  JSON.pretty_generate({availability: hash_to_show, links: [{ rel: "self",link: "#{request.url}"}]})  
+end
+
 
 get '/create' do
   Resource.create(name: 'ventilador', description: 'Ventilador de pie con astas metálicas')
