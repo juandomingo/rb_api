@@ -23,6 +23,12 @@ class RequestDecorator
     end
   end
 
+  def as_if_i_had_no_username
+    momento = @resource_as_hash.clone
+    momento.delete(:user)
+    momento
+  end
+
   def am_i_previous_?(base_date,days_from_base)
     am_i_previous?(Time.parse(base_date) + (days_from_base.to_i * 24 * 60 * 60))
   end
@@ -81,6 +87,30 @@ class RequestDecorator
   end
 
   def as_if_i_were_an_intiger_time_lapse
-    (@to_decorate.from.to_i..@to_decorate.to.to_i)
+    (@to_decorate.from.to_i..@to_decorate.to.to_i)     
   end
+
+  def as_just_from
+    @to_decorate.from
+  end
+
+  def as_just_to
+    @to_decorate.to
+  end
+
+  def am_i_touching?(other_request)
+    (as_just_from <= other_request.as_just_to) and (as_just_to >= other_request.as_just_from)
+  end
+  
+  def delete!
+    Request.delete(Request.find(as_if_i_were_a_number))
+  end
+
+  def accept!
+    Request.update(as_if_i_were_a_number, status:'accepted')
+  end
+
+  def cancel!
+    Request.update(as_if_i_were_a_number, status:'canceled')
+  end  
 end

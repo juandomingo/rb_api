@@ -8,13 +8,7 @@ before do
 end
 
 error ActiveRecord::RecordNotFound do
-  status 404
-  'Not Found'
-end
-
-not_found
-  status 404
-  'Not Found'
+  redirect to(not_found)
 end
 
 def conflict
@@ -22,24 +16,11 @@ def conflict
   'conflict'
 end
 
-def bad_request
-  status 400
-  'Bad request'
-end
-
 error do
-  status 403
-  'fatal'
 end
 
 def self.root
   File.dirname(__FILE__)
-end
-
-
-
-get '/' do
-  'Hello World'
 end
 
 get '/resources' do
@@ -54,13 +35,11 @@ get '/resources/:id' do
   begin
     JSON.pretty_generate({ resource: ResourceDecorator.new(Resource.find(params[:id])).as_if_i_had_actions( request.url,'self', 'booking')  })
   rescue ActiveRecord::RecordNotFound
-    redirect 'not_found'
+    redirect 'error'
   end 
 end
 
 get '/resources/:id/bookings' do 
-
-
   params[:date]=Date.today.next_day.iso8601 if params[:date].nil? 
   params[:limit]=30 if params[:limit].nil? 
   params[:status]='approved' if params[:status].nil?  
@@ -82,17 +61,14 @@ get '/resources/:id/availability' do
   params[:date]=Date.today.next_day.iso8601 if params[:date].nil? 
   params[:limit]=30 if params[:limit].nil? 
 
-  redirect 'bad_request' if params[:limit].to_i > 365
-  redirect 'bad_request' unless /\d{4}-\d{1,2}-\d{1,2}/.match(params[:date])
+  redirect 'error' if params[:limit].to_i > 365
 
   base_array = []
   Request.all.each do |one_request| 
     one_decored_request = RequestDecorator.new(one_request)
     base_array << one_decored_request.as_if_i_were_an_intiger_time_lapse if one_decored_request.am_i_approved?&&one_decored_request.am_i_between_?(params[:date], params[:limit])&&one_decored_request.am_i_requesting_resource_number?(params[:id])
   end
-
   time_array = [(Time.parse(params[:date]).to_i..Time.parse(params[:date]).to_i + params[:limit].to_i*SECONDS_IN_A_DAY)]
-
   base_array.each  do |each_a|
     time_array.each do |each_t| 
       if (each_t === each_a.min)&&(each_t === each_a.max) then
@@ -101,7 +77,6 @@ get '/resources/:id/availability' do
       end
     end
   end
-
   hash_to_show = []
   time_array.each  do |each_one|
     hash_to_show << {from: Time.at(each_one.min).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -114,20 +89,26 @@ end
 
 post '/resources/:id/bookings' do
   redirect 'error' if params[:from].nil?
-  params[:to]=Date.today.next_day(365).iso8601 if params[:to].nil?
+  params[:to]= Date.today.next_day(365).iso8601 if params[:to].nil?
   base_array = []
   Request.all.each do |one_request| 
     one_decored_request = RequestDecorator.new(one_request)
-    base_array << one_decored_request.am_i_between?(params[:from],params[:to])&&one_decored_request.am_i_approved?&&one_decored_request.am_i_requesting_resource_number?(params[:id])
+    base_array << one_decored_request if one_decored_request.am_i_between?(params[:from],params[:to])&&one_decored_request.am_i_approved?&&one_decored_request.am_i_requesting_resource_number?(params[:id])
   end
-  status 201
-  body JSON.pretty_generate(RequestDecorator.new(Request.create!(user: 'domingo@gmail.com', from: "#{params[:from]}",to:"#{params[:to]}",status:'pending',resources_id:"#{params[:id]}").as_if_i_had_actions(request.base_url,'self','accept','reject') )) if base_array.empty?
+  if base_array.empty? do
+    JSON.pretty_generate(RequestDecorator.new(Request.create!(user: 'domingo@gmail.com', from: "#{params[:from]}",to:"#{params[:to]}",status:'pending',resources_id:"#{params[:id]}")).as_if_i_had_actions(request.base_url,'self','accept','reject') ) 
+    status 201
+  end
+  else
+    status 408
+  end  
 end
 
 delete '/resources/:id/bookings/:id_request' do
+  redirect 'error' if RequestDecorator.new(Request.find(params[:id_request])).nil?
   requested = RequestDecorator.new(Request.find(params[:id_request]))
   requested.delete!
-  
+  status 200
 end
 
 get '/resources/:id/bookings/:id_request' do

@@ -244,7 +244,7 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_get_bookings_wrong_argument
-    wrong_arguments = ['?asdfsd','?date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pending','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
+    wrong_arguments = ['?date=2013-11-13&limit=366&status=pending','?date=&limit=&status=','?&limit=344&status=pendingh','?date=2013-11-13&limit=0status=asda','?date=201-11-13&limit=10&status=pending','?datfkdfg&limit=1sfdfeqpending' ]
     wrong_arguments.each do |x|  
       get "/resources/1/bookings#{x}"
       assert_equal 404, last_response.status
@@ -253,8 +253,11 @@ class AppTest < Minitest::Unit::TestCase
   end
 
   def test_get_availability_wrong_argument
-    wrong_arguments = ['?asdfsd','?date=2013-11-13&limit=333&status=pending','?date=2013-11-13&limit=366&','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
-    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 404, last_response.status;assert_equal 'Bad request', last_response.body }
+    wrong_arguments = ['?date=2013-11-13&limit=366','?date=&limit=&status=','?&limit=366','?date=2013-1','?datfkdfg&limit=1sfdfeqpending']
+    wrong_arguments.each do |x|  
+      get "/resources/1/availability#{x}"
+      assert_equal 404, last_response.status
+    end
   end
 
   def test_get_bookings_the_bookings_exists_all_parameters
@@ -320,7 +323,10 @@ class AppTest < Minitest::Unit::TestCase
 
   def test_add_new_booking_wrogn_args
     wrong_arguments = ['asdfsd','date=2013-11-13&limit=333&status=pending','from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?from:2013-11-12T00:00:00Zto:2013-11-13T11:00:00Z','?date=2013-1','?datfkdfg&limit=1sfdfeqpending' ]
-    wrong_arguments.each { |x|  get "/resources/1/availability#{x}";assert_equal 400, last_response.status;assert_equal 'Bad request', last_response.body }
+    wrong_arguments.each do |x| 
+      get "/resources/1/availability#{x}"
+      assert_equal 404, last_response.status
+    end
   end    
 
   def test_add_new_booking
@@ -365,7 +371,7 @@ class AppTest < Minitest::Unit::TestCase
   def test_cancel_inexsistent
     delete '/resources/1/bookings/3000'
     assert_equal 404, last_response.status
-    assert_equal 'Not Found', last_response.body
+    assert_equal '', last_response.body
   end
   
   def test_accept_booking
@@ -413,22 +419,20 @@ class AppTest < Minitest::Unit::TestCase
 
   def test_accept_booking_with_conficts
     post '/resources/1/bookings', from:'2000-11-12T00:00:00Z', to:'2000-11-13T00:00:00Z'
-    last_booking = Request.last
-    first_booking_id=last_booking.id
-    put "/resources/1/bookings/#{last_booking.id}"
+    first_booking = Request.last
+    put "/resources/1/bookings/#{first_booking .id}"
     post '/resources/1/bookings', from: '2000-11-12T00:00:00Z', to: '2000-11-13T00:00:00Z'
-    last_booking = Request.last
-    put "/resources/1/bookings/#{last_booking.id}"
-    assert_equal 409, last_response.status
+    assert_equal 404, last_response.status
   end
 
   def test_accept_booking_and_cancel_the_others
-    post '/resources/1/bookings?', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
+    post '/resources/1/bookings', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
     first_booking = Request.last
     post '/resources/1/bookings', from:'2000-11-12T00:00:00Z',to:'2000-11-13T00:00:00Z'
     second_booking = Request.last
     put "/resources/1/bookings/#{first_booking.id}"
-    assert_equal 'reject', second_booking.status
+    assert_equal "rejected", second_booking.status
+
   end
 
   def test_booking_show
