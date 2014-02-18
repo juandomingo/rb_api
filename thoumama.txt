@@ -1,8 +1,0 @@
-Inspecting 1 file
-E
-
-Offences:
-
-app.rb:62:1: E: unexpected token $end
-
-1 file inspected, 1 offence detected

@@ -107,10 +107,10 @@ class RequestDecorator
   end
 
   def accept!
-    Request.update(as_if_i_were_a_number, status:'accepted')
+    @to_decorate.update(status: 'accepted')
   end
 
   def cancel!
-    Request.update(as_if_i_were_a_number, status:'canceled')
+    @to_decorate.update(status: 'canceled')
   end  
 end

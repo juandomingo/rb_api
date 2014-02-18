@@ -13,6 +13,6 @@ class ResourceDecorator
   end
 
   def generate_booking(url)
-    {rel: "bookings",uri: "#{url}/resources/1/bookings"}
+    {rel: "bookings",uri: "#{url}/resources/#{as_if_i_were_a_number}/bookings"}
   end
 end
